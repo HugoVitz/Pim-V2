@@ -28,7 +28,7 @@ class App:
 
         self.style = ttk.Style()
         self.style.configure("TButton", font=("Arial", 12), padding=10)
-        self.style.configure("TLabel", font=("Arial", 12), background="#ffffff")
+        self.style.configure("TLabel", font=("Arial", 12), background="#FFFFFF")
         self.create_login_screen()
 
     def _load_common_images(self):
@@ -36,28 +36,7 @@ class App:
            Se alguma não existir, define None para a imagem correspondente."""
         imgs_dir = os.path.join(self.base_dir, "imagens")
 
-        # braintech (agora usada como fundo completo do login)
-        self.topbar_image = None
-        tb_path = os.path.join(imgs_dir, "braintech.png")
-        if os.path.exists(tb_path):
-            try:
-                tb_img = Image.open(tb_path)
-                # redimensiona para cobrir toda a janela 800x600
-                tb_img = tb_img.resize((800, 600), Image.Resampling.LANCZOS)
-                self.topbar_image = ImageTk.PhotoImage(tb_img)
-            except Exception as e:
-                print(f"⚠️ Erro ao carregar braintech.png: {e}")
-
-        # bg-login (opcional — mantido para compatibilidade, mas não é usado para o "fundo principal")
-        self.bg_login_image = None
-        bg_login_path = os.path.join(imgs_dir, "bg-login.png")
-        if os.path.exists(bg_login_path):
-            try:
-                bimg = Image.open(bg_login_path)
-                bimg = bimg.resize((800, 600), Image.Resampling.LANCZOS)
-                self.bg_login_image = ImageTk.PhotoImage(bimg)
-            except Exception as e:
-                print(f"⚠️ Erro ao carregar bg-login.png: {e}")
+       
 
         # fundo do professor e do aluno (principal)
         self.bg_prof_image = None
@@ -89,18 +68,8 @@ class App:
         self.login_canvas = tk.Canvas(self.root, width=800, height=600, highlightthickness=0)
         self.login_canvas.pack(expand=True, fill=tk.BOTH)
 
-        # Fundo: usa braintech.png se existir (preenche tudo)
-        if self.topbar_image:
-            self.login_canvas.create_image(0, 0, anchor='nw', image=self.topbar_image)
-            # previne coleta de lixo
-            self.login_canvas.bg_ref = self.topbar_image
-        else:
-            # fallback: se não existir a imagem, usa bg-login se disponível
-            if self.bg_login_image:
-                self.login_canvas.create_image(0, 0, anchor='nw', image=self.bg_login_image)
-                self.login_canvas.bg_ref = self.bg_login_image
-            else:
-                self.login_canvas.configure(bg="#ffffff")
+        # Fundo: cor sólida sem imagem
+        self.login_canvas.configure(bg="#FFFFFF")
 
         # Centralização: colocaremos os elementos próximos do centro (x=400)
         center_x = 400
@@ -112,8 +81,8 @@ class App:
 
         # Título e subtítulo: desenhados como textos sobre o canvas (branco, sem fundo)
         self.login_canvas.create_text(center_x, title_y, text="Seja Bem Vindo ao BrainTech!\n",
-                                      font=("Arial", 25, "bold"), fill="#FFFFFF")
-        self.login_canvas.create_text(center_x, subtitle_y, text="Login", font=("Arial,", 20, "bold" ), fill="#00102E")
+                                      font=("Arial", 25, "bold"), fill="#000000")
+        self.login_canvas.create_text(center_x, subtitle_y, text="Login", font=("Arial,", 20, "bold" ), fill="#000000")
 
         # Para garantir legibilidade mínima sobre imagens muito claras, desenhamos
         # um leve retângulo semitransparente atrás dos campos usando stipple.
@@ -142,10 +111,10 @@ class App:
         entry_x = center_x + (entry_width // 2) - (entry_width // 2) + 0  # lógica de alinhamento central
         # Entrada de Nome de Usuário
         self.username_entry = tk.Entry(self.root, font=("Arial", 12), bd=0, relief='flat', highlightthickness=0,
-                                       fg="black", insertbackground="black")
+                                       fg="black", insertbackground="black", bg="#D3D3D3")
         # Entrada de Senha
         self.password_entry = tk.Entry(self.root, show="*", font=("Arial", 12), bd=0, relief='flat',
-                                       highlightthickness=0, fg="black", insertbackground="black")
+                                       highlightthickness=0, fg="black", insertbackground="black", bg="#D3D3D3")
 
         # NOTA: Tkinter Entry não suporta transparência verdadeira. Para minimizar a borda,
         # definimos bd=0 e relief='flat'. Se a sua imagem torna difícil ver onde digitar,
